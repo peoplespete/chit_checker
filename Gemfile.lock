@@ -1,0 +1,22 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    coderay (1.1.0)
+    colorize (0.7.7)
+    i18n (0.7.0)
+    method_source (0.8.2)
+    money (6.6.1)
+      i18n (>= 0.6.4, <= 0.7.0)
+    pry (0.10.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    slop (3.6.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  colorize
+  money
+  pry
