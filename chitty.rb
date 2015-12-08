@@ -35,7 +35,7 @@ last_row = ''
 chits = []
 filename = generic_ask(Dir.entries('../../Downloads/').select { |f| f[/\.csv/] })
 
-CSV.foreach(filename) do |row|
+CSV.foreach("../../Downloads/#{filename}") do |row|
   started = true if last_row == 'Transaction Number'
   last_row = row[0]
   next unless started
