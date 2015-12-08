@@ -3,12 +3,21 @@ require 'csv'
 require 'pry'
 require 'colorize'
 
-p String.colors
 def print_chits(chits)
   puts "Date       |Amount| Description".light_magenta.on_blue.bold
   chits.sort_by { |c| c[:date] }.each do |chit|
     puts "#{chit[:date]} ".blue.on_light_yellow + " $#{sprintf( "%0.02f", chit[:amount].round(2))} ".blue.on_light_white + " #{chit[:description]}".blue.on_light_magenta
   end
+end
+
+def generic_ask(items)
+  puts "Which one is it?".blue.on_yellow
+  items.each.with_index do |item, i|
+    puts "#{i+1}) #{item} ".blue.on_light_yellow
+  end
+  num = STDIN.gets.chomp.to_i rescue nil
+  return nil if num.nil?
+  items[num-1]
 end
 
 def ask(chits)
@@ -24,7 +33,9 @@ end
 started = false
 last_row = ''
 chits = []
-CSV.foreach("Export.csv") do |row|
+filename = generic_ask(Dir.entries('../../Downloads/').select { |f| f[/\.csv/] })
+
+CSV.foreach(filename) do |row|
   started = true if last_row == 'Transaction Number'
   last_row = row[0]
   next unless started
