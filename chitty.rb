@@ -1,4 +1,4 @@
-# require 'Date'
+require 'securerandom'
 require 'csv'
 require 'pry'
 require 'colorize'
@@ -43,6 +43,7 @@ CSV.foreach("../../Downloads/#{filename}") do |row|
   description = description[0..-12]  if description[/.+NBR\:/]
 
   chit = {
+    uuid: SecureRandom.base64,
     date:  Date.strptime(row[1], "%m/%d/%Y"),
     amount: row[4].to_f * -1,
     description: description
@@ -58,11 +59,10 @@ loop do
   if matchers.size == 1
     matcher = matchers.first
     chits.delete(matcher)
-    chits.slice!(chits.index(matcher))
     message = "Removed #{matcher[:description]} on #{matcher[:date]}.".bold.green
   elsif matchers.size > 1
     matcher = ask(matchers)
-    chits.slice!(chits.index(matcher))
+    chits.delete(matcher)
     message = "Removed #{matcher[:description]} on #{matcher[:date]}.".bold.green
   else
     message = "There was some problem finding #{amt}.".red.on_yellow
