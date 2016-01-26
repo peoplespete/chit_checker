@@ -47,24 +47,27 @@ CSV.foreach("../../Downloads/#{filename}") do |row|
     amount: row[4].to_f * -1,
     description: description
   }
-  chits.push chit if chit[:amount] > 0
+  chits.push chit if chit[:amount] > 0 && !chit[:description].include?("TRANSFER TO CK")
 end
 
+print_chits(chits)
 loop do
-  print_chits(chits)
   puts "What is your amount?".bold.green
   amt = STDIN.gets.chomp.to_f
   matchers = chits.select{ |c| c[:amount] == amt }
   if matchers.size == 1
     matcher = matchers.first
     chits.delete(matcher)
-    puts "Removed #{matcher[:description]} on #{matcher[:date]}.".bold.green
+    chits.slice!(chits.index(matcher))
+    message = "Removed #{matcher[:description]} on #{matcher[:date]}.".bold.green
   elsif matchers.size > 1
     matcher = ask(matchers)
-    chits.delete(matcher)
-    puts "Removed #{matcher[:description]} on #{matcher[:date]}.".bold.green
+    chits.slice!(chits.index(matcher))
+    message = "Removed #{matcher[:description]} on #{matcher[:date]}.".bold.green
   else
-    puts "There was some problem finding #{amt}.".red.on_yellow
+    message = "There was some problem finding #{amt}.".red.on_yellow
   end
+  print_chits(chits)
+  puts message
 end
 
