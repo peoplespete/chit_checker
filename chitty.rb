@@ -102,8 +102,6 @@ incomes.push *capital_one_incomes
 chits = chits.sort_by{ |chit| chit[:date] }
 incomes = incomes.sort_by{ |income| income[:date] }
 
-binding.pry
-
 loop do
   mode = generic_ask('mode',['Chit', 'Income'])
   case mode
